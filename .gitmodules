@@ -1,0 +1,3 @@
+[submodule "veloleo-harvester"]
+	path = veloleo-harvester
+	url = https://github.com/JensKrumsieck/veloleo-harvester
