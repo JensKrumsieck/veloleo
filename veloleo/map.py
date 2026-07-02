@@ -1,5 +1,4 @@
 import logging
-from multiprocessing import Pool
 from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 import numpy as np
@@ -20,6 +19,15 @@ def save_geojson(edges_active, output_file: str = "bike_heatmap.geojson"):
     geojson_df.to_file(output_file, driver="GeoJSON")
 
     logger.info("Saved GeoJSON to %s", output_file)
+
+
+def save_geopkg(edges_active, output_file: str = "bike_heatmap.gpkg"):
+    edges_active.to_crs("EPSG:4326")
+    columns_to_keep = ["count", "geometry"]
+    geopkg_df = edges_active[columns_to_keep]
+    geopkg_df.to_file("bike_heatmap.gpkg", layer="trips", driver="GPKG")
+
+    logger.info("Saved GeoPackage to %s", output_file)
 
 
 def plot_heatmap_data(edges, edges_active, output_file: str = "bike_heatmap.png"):

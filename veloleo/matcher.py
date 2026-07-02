@@ -202,17 +202,6 @@ def match_trips(departures: list[Event], arrivals: list[Event]):
         dep.iloc[i]["time"] for i, j in zip(dep_idx, col_idx) if j >= n_arr
     ]
 
-    unmatched_deps = [dep.iloc[i] for i, j in zip(dep_idx, col_idx) if j >= n_arr]
-    unmatched_df = pd.DataFrame(unmatched_deps)
-    if len(unmatched_deps) > 0:
-        clusters = unmatched_df.groupby("time").agg(
-            n=("bike_id", "size"),
-            lat_spread=("lat", lambda s: s.max() - s.min()),
-            lon_spread=("lon", lambda s: s.max() - s.min()),
-        )
-        print(clusters[clusters["n"] >= 3].sort_values("n", ascending=False))
-    else:
-        print("Success! No unmatched departure clusters found.")
     stats = {
         "n_departures": len(dep),
         "n_arrivals": n_arr,

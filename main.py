@@ -1,9 +1,13 @@
 from pathlib import Path
 import logging
-
 import numpy as np
 from veloleo.events import get_events
-from veloleo.map import find_routes, plot_heatmap_data, save_geojson
+from veloleo.map import (
+    find_routes,
+    plot_heatmap_data,
+    save_geojson,
+    save_geopkg,
+)
 from veloleo.matcher import match_trips
 from veloleo.plot import plot_diagnostics
 
@@ -20,7 +24,7 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     logger.info("Collecting events...")
-    
+
     # get departure and arrival events
     events = get_events(DATA_DIRECTORY)
     departures = [ev for ev in events if ev.type == "departure"]
@@ -40,6 +44,7 @@ def main():
 
     edges, edges_active = find_routes(trips)
     save_geojson(edges_active)
+    save_geopkg(edges_active)
     plot_heatmap_data(edges, edges_active)
 
 
