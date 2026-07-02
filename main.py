@@ -3,6 +3,7 @@ import logging
 
 import numpy as np
 from veloleo.events import get_events
+from veloleo.map import find_routes
 from veloleo.matcher import match_trips
 from veloleo.plot import plot_diagnostics
 
@@ -33,9 +34,10 @@ def main():
     logger.info(f"median trip duration: {np.median(durations):.1f} min")
     logger.info(f"median avg speed:     {np.median(speeds):.2f} m/s")
     logger.info(f"{stats["n_unmatched_departures"]} unmatched departures")
-    logger.info(stats)
 
     plot_diagnostics(trips)
+    
+    find_routes(trips)
 
 
 if __name__ == "__main__":
