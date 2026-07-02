@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 from veloleo.events import get_events
-from veloleo.map import find_routes
+from veloleo.map import find_routes, plot_heatmap_data, save_geojson
 from veloleo.matcher import match_trips
 from veloleo.plot import plot_diagnostics
 
@@ -36,8 +36,10 @@ def main():
     logger.info(f"{stats["n_unmatched_departures"]} unmatched departures")
 
     plot_diagnostics(trips)
-    
-    find_routes(trips)
+
+    edges, edges_active = find_routes(trips)
+    save_geojson(edges_active)
+    plot_heatmap_data(edges, edges_active)
 
 
 if __name__ == "__main__":
