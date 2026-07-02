@@ -15,7 +15,7 @@ logger = logging.getLogger("veloleo")
 
 ### CONSTANTS
 MAX_TRIP_DURATION = timedelta(hours=4)
-MIN_TRIP_DURATION = timedelta(minutes=1)
+MIN_TRIP_DURATION = timedelta(seconds=25)
 
 MIN_TRIP_DISTANCE = 250  # meters, to prevent GPS jitter
 
@@ -69,6 +69,31 @@ def haversine_distance_np(
     return c * r
 
 
+def _clean_spatial_density_anomalies(df: pd.DataFrame) -> pd.DataFrame:
+    if df.empty:
+        return df
+
+    df_approx = df.copy()
+    df_approx["lat_bucket"] = df_approx["lat"].round(3)
+    df_approx["lon_bucket"] = df_approx["lon"].round(3)
+
+    exact_glitch = df.groupby(["time", "lat", "lon"])["bike_id"].transform("size") > 3
+    bulk_drop_local = (
+        df_approx.groupby(["time", "lat_bucket", "lon_bucket"])["bike_id"].transform(
+            "size"
+        )
+        > 12
+    )
+    bulk_drop_global = df.groupby("time")["bike_id"].transform("size") > 100
+
+    anomalies = exact_glitch | bulk_drop_local | bulk_drop_global
+
+    clean_df = df[~anomalies].copy()
+    logger.warning(f"Filtering out {anomalies.sum()} anomalous events from dataset.")
+
+    return clean_df.reset_index(drop=True)
+
+
 def _events_to_df(events: list[Event]) -> pd.DataFrame:
     df = pd.DataFrame([e.__dict__ for e in events])
     return df.sort_values("time").reset_index(drop=True)
@@ -110,18 +135,19 @@ def _build_cost_matrix(dep: pd.DataFrame, arr: pd.DataFrame):
                 dep_lons[i], dep_lats[i], sub_lons, sub_lats
             )  # fast distance
 
-            valid_dt = np.where(dt > 0, dt, 1.0)
+            valid_dt = np.where(dt > 0, dt, 150)
             speed = dist / valid_dt
 
-            mask = (dt > 0) & (dist > MIN_TRIP_DISTANCE) & (speed <= MAX_SPEED_MS)
+            mask = (dt >= 0) & (dist > MIN_TRIP_DISTANCE) & (speed <= MAX_SPEED_MS)
 
             valid_indices = np.where(mask)[0]
 
             if len(valid_indices) > 0:
                 dt_valid = dt[valid_indices]
                 dt_minutes = dt_valid / 60.0
+
                 speed_valid = speed[valid_indices]
-                overspeed = np.clip(speed_valid - PREFERABLE_SPEED_MS, 0, None)
+                overspeed = np.clip(speed_valid - PREFERABLE_SPEED_MS, 0, None) * 3.6
                 trip_cost = dt_minutes + SPEED_PENALTY_WEIGHT_PER_MS * overspeed
 
                 rows.extend([i] * len(valid_indices))
@@ -139,7 +165,10 @@ def match_trips(departures: list[Event], arrivals: list[Event]):
     logger.info("Matching trips...")
 
     dep = _events_to_df(departures)
+    dep = _clean_spatial_density_anomalies(dep)
+
     arr = _events_to_df(arrivals)
+    arr = _clean_spatial_density_anomalies(arr)
 
     n_arr = len(arr)
 
@@ -175,12 +204,15 @@ def match_trips(departures: list[Event], arrivals: list[Event]):
 
     unmatched_deps = [dep.iloc[i] for i, j in zip(dep_idx, col_idx) if j >= n_arr]
     unmatched_df = pd.DataFrame(unmatched_deps)
-    clusters = unmatched_df.groupby("time").agg(
-        n=("bike_id", "size"),
-        lat_spread=("lat", lambda s: s.max() - s.min()),
-        lon_spread=("lon", lambda s: s.max() - s.min()),
-    )
-    print(clusters[clusters["n"] >= 3].sort_values("n", ascending=False))
+    if len(unmatched_deps) > 0:
+        clusters = unmatched_df.groupby("time").agg(
+            n=("bike_id", "size"),
+            lat_spread=("lat", lambda s: s.max() - s.min()),
+            lon_spread=("lon", lambda s: s.max() - s.min()),
+        )
+        print(clusters[clusters["n"] >= 3].sort_values("n", ascending=False))
+    else:
+        print("Success! No unmatched departure clusters found.")
     stats = {
         "n_departures": len(dep),
         "n_arrivals": n_arr,
