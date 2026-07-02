@@ -4,6 +4,7 @@ import logging
 import os
 from pathlib import Path
 import pandas as pd
+from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class Event:
 def get_events(folder: Path) -> list[Event]:
     files = [f for f in os.listdir(folder) if f.endswith(".csv")]
     events = []
-    for f in files:
+    for f in tqdm(files):
         events.extend(get_daily_events(folder / f))
 
     logger.info(f"Found {len(events)} Events in {len(files)} days")
