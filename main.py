@@ -20,6 +20,7 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     logger.info("Collecting events...")
+    
     # get departure and arrival events
     events = get_events(DATA_DIRECTORY)
     departures = [ev for ev in events if ev.type == "departure"]
