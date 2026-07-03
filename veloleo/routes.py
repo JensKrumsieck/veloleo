@@ -1,5 +1,4 @@
 import logging
-
 import numpy as np
 import osmnx as ox
 import networkx as nx
@@ -7,15 +6,13 @@ from pyproj import Transformer
 from tqdm import tqdm
 from matcher import Trip
 from collections import Counter
+from bike_map import get_graph
 
 logger = logging.getLogger("veloleo")
 
 
 def find_routes(trips: list[Trip]):
-    logger.info("Downloading bike network...")
-
-    G = ox.graph_from_place("Braunschweig, Germany", network_type="bike")
-    G = ox.project_graph(G)
+    G = get_graph()
 
     # WGS84 (lat, lon) to EPSG:4326
     transformer = Transformer.from_crs(

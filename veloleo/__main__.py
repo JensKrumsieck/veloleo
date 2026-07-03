@@ -5,13 +5,13 @@ import logging
 import numpy as np
 from events import get_events
 from bike_map import (
+    plot_event_heatmaps,
     plot_heatmap_data,
     save_geojson,
-    save_geopkg,
 )
 from matcher import match_trips
 from plot import plot_diagnostics
-from veloleo.routes import find_routes
+from routes import find_routes
 
 DATA_DIRECTORY = Path("veloleo-harvester/data")
 LOG_FORMAT = "[%(asctime)s] " "%(levelname)-8s " "%(message)s"
@@ -29,8 +29,11 @@ def main(data_dir: Path):
 
     # get departure and arrival events
     events = get_events(data_dir)
+
     departures = [ev for ev in events if ev.type == "departure"]
     arrivals = [ev for ev in events if ev.type == "arrival"]
+
+    plot_event_heatmaps(events)
 
     logger.info(f"Found {len(departures)} depature and {len(arrivals)} arrival events")
 
@@ -48,7 +51,6 @@ def main(data_dir: Path):
 
     edges, edges_active = find_routes(trips)
     save_geojson(edges_active)
-    save_geopkg(edges_active)
     plot_heatmap_data(edges, edges_active)
 
 
