@@ -6,10 +6,10 @@
         if (ratio > 0.85) return "#fcffa4"; // Bright Yellow-White
         if (ratio > 0.65) return "#fac228"; // Hot Golden Yellow
         if (ratio > 0.45) return "#f17c1d"; // Vibrant Orange
-        if (ratio > 0.30) return "#d14b4f"; // Hot Pink/Coral Red
+        if (ratio > 0.3) return "#d14b4f"; // Hot Pink/Coral Red
         if (ratio > 0.15) return "#9c2e6f"; // Deep Magenta/Purple
         if (ratio > 0.05) return "#57106e"; // Dark Purple
-        return "#1b0c41";                   // Ink Navy/Black (baseline)
+        return "#1b0c41"; // Ink Navy/Black (baseline)
     }
 
     function getLineWidth(count: number, maxCount: number) {
@@ -48,7 +48,18 @@
 
 <div class="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl dark:prose-invert mx-auto">
     <h1>Nutzungsanalyse Veloleo</h1>
-    <p>In dieser Karte ist die potentielle Nutzung der Fahrräder des Braunschweiger Fahrradausleihsystems "Veloleo" interaktiv visualisiert.</p>
+    <p>
+        In dieser Karte ist die potentielle Nutzung der Fahrräder des Braunschweiger Fahrradausleihsystems "Veloleo" interaktiv visualisiert. Die Karte zeigt <em>mögliche</em> gefahrene Strecken im Zeitraum der Datensammlung. <em>Mögliche</em> Strecken,
+        weil Streckendaten nicht über die öffentlichen Schnittstellen abrufbar sind (siehe unten). Zu Erkennen ist eine erhebliche Nutzung im Bereich der Campusgegenden, sowie Fahrten in oder von Richtung Hauptbahnhof, vorwiegend über den östlichen Ring.
+    </p>
 
     <Map data={mapLayer} />
+
+    <p class="text-sm">
+        Die Daten wurden von der öffentlichen GBFS-Schnittstelle der Nextbike GmbH über einen Zeitraum von mehreren Tagen im Abstand von 5 Minuten gesammelt. Da diese Schnittstelle allerdings lediglich freie Fahrräder listet, wurden verschwindende
+        Fahräder als Ausleihstart und erscheinende Fahrräder als Ausleihende interpretiert. Aus diesen punktuellen Informationen wurden mittels Bipartite Graph Matching Algorithmus (<em>min_weight_full_bipartite_matching</em>) mögliche Start-Ziel-Paare ermittelt, aus denen die Strecken mittels
+        OpenStreetMap Bike Map anhand des kürzesten Weges ermittelt wurden. Das heißt die Strecken stellen keine wirklichen Fahrten, sondern mögliche Benutzungskorridore dar.
+    </p>
+
+    <img src="/images/event_heatmaps.png" alt="Event Dichteverteilungen"/>
 </div>

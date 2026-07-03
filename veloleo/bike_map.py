@@ -1,7 +1,6 @@
-import json
+import contextily as ctx
 import logging
 from pathlib import Path
-import geojsoncontour
 from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 from events import Event
@@ -132,6 +131,13 @@ def plot_event_heatmaps(
             vmin = 0
             vmax = np.max(Z)
 
+        ctx.add_basemap(
+            axes[i],
+            crs="EPSG:4326",
+            source=ctx.providers.CartoDB.DarkMatter,  # type: ignore
+            zorder=0,
+        )
+
         contour = axes[i].contourf(
             X,
             Y,
@@ -145,7 +151,6 @@ def plot_event_heatmaps(
 
         cbar = fig.colorbar(contour, ax=axes[i], shrink=0.7)
         cbar.set_label(labels[i])
-
         # plot events as points
         gdf[i].plot(ax=axes[i], color="black", markersize=1, alpha=0.1, label="Events")
         axes[i].set_title(titles[i], fontsize=12, fontweight="bold")
