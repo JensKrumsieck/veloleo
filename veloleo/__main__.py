@@ -1,8 +1,10 @@
+import os
+import argparse
 from pathlib import Path
 import logging
 import numpy as np
 from events import get_events
-from map import (
+from bike_map import (
     find_routes,
     plot_heatmap_data,
     save_geojson,
@@ -17,7 +19,7 @@ LOG_FORMAT = "[%(asctime)s] " "%(levelname)-8s " "%(message)s"
 logger = logging.getLogger("veloleo")
 
 
-def main():
+def main(data_dir: Path):
     logging.basicConfig(
         level=logging.INFO,
         format=LOG_FORMAT,
@@ -26,7 +28,7 @@ def main():
     logger.info("Collecting events...")
 
     # get departure and arrival events
-    events = get_events(DATA_DIRECTORY)
+    events = get_events(data_dir)
     departures = [ev for ev in events if ev.type == "departure"]
     arrivals = [ev for ev in events if ev.type == "arrival"]
 
@@ -40,6 +42,8 @@ def main():
     logger.info(f"median avg speed:     {np.median(speeds):.2f} m/s")
     logger.info(f"{stats["n_unmatched_departures"]} unmatched departures")
 
+    os.makedirs("data", exist_ok=True)
+
     plot_diagnostics(trips)
 
     edges, edges_active = find_routes(trips)
@@ -49,4 +53,18 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(
+        "veloleo", description="processes data from veloleo-harvester"
+    )
+    parser.add_argument(
+        "-d",
+        "--data",
+        required=False,
+        type=Path,
+        help="data directory in csv format",
+        metavar="DIR",
+    )
+    args = parser.parse_args()
+
+    data_dir = args.data or DATA_DIRECTORY
+    main(data_dir)

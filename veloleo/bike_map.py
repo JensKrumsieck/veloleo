@@ -25,7 +25,7 @@ def save_geopkg(edges_active, output_file: str = "data/bike_heatmap.gpkg"):
     edges_active.to_crs("EPSG:4326")
     columns_to_keep = ["count", "geometry"]
     geopkg_df = edges_active[columns_to_keep]
-    geopkg_df.to_file("bike_heatmap.gpkg", layer="trips", driver="GPKG")
+    geopkg_df.to_file(output_file, layer="trips", driver="GPKG")
 
     logger.info("Saved GeoPackage to %s", output_file)
 
