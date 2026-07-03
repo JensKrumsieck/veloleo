@@ -1,10 +1,10 @@
 import numpy as np
-from veloleo.matcher import MAX_SPEED_MS, Trip
+from matcher import MAX_SPEED_MS, Trip
 import matplotlib.pyplot as plt
 
 
 def plot_diagnostics(
-    trips: list[Trip], output_path: str = "trip_diagnostics.png"
+    trips: list[Trip], output_path: str = "data/trip_diagnostics.png"
 ) -> None:
     distances_km = [t.distance_m / 1000 for t in trips]
     speeds_kmh = [t.avg_speed_ms * 3.6 for t in trips]

@@ -1,15 +1,15 @@
 from pathlib import Path
 import logging
 import numpy as np
-from veloleo.events import get_events
-from veloleo.map import (
+from events import get_events
+from map import (
     find_routes,
     plot_heatmap_data,
     save_geojson,
     save_geopkg,
 )
-from veloleo.matcher import match_trips
-from veloleo.plot import plot_diagnostics
+from matcher import match_trips
+from plot import plot_diagnostics
 
 DATA_DIRECTORY = Path("veloleo-harvester/data")
 LOG_FORMAT = "[%(asctime)s] " "%(levelname)-8s " "%(message)s"

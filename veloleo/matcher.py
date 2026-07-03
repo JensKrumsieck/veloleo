@@ -8,7 +8,7 @@ from scipy.sparse.csgraph import min_weight_full_bipartite_matching
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from veloleo.events import Event
+from events import Event
 
 logger = logging.getLogger("veloleo")
 
