@@ -5,13 +5,13 @@ import logging
 import numpy as np
 from events import get_events
 from bike_map import (
-    find_routes,
     plot_heatmap_data,
     save_geojson,
     save_geopkg,
 )
 from matcher import match_trips
 from plot import plot_diagnostics
+from veloleo.routes import find_routes
 
 DATA_DIRECTORY = Path("veloleo-harvester/data")
 LOG_FORMAT = "[%(asctime)s] " "%(levelname)-8s " "%(message)s"
