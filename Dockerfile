@@ -21,7 +21,7 @@ RUN npm ci --omit=dev
 # copy build folders
 COPY --from=builder /app/dashboard/build ./build
 COPY --from=builder /app/dashboard/.svelte-kit ./.svelte-kit
-COPY --from=builder /app/data ./data
+COPY --from=builder /app/data ../data
 
 RUN chown -R node:node /app
 USER node
