@@ -111,7 +111,7 @@ def plot_event_heatmaps(
     Z_arr = kde_surface(gdf_arr, X, Y)
     Z_transition = Z_dep - Z_arr
 
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    fig, axes = plt.subplots(3, 1, figsize=(8, 18))
 
     densities = [Z_dep, Z_arr, Z_transition]
     cmaps = ["Oranges", "Purples", "RdBu_r"]
@@ -152,7 +152,7 @@ def plot_event_heatmaps(
             source=ctx.providers.OpenStreetMap.Mapnik,  # type: ignore
         )
 
-        cbar = fig.colorbar(contour, ax=axes[i], shrink=0.7)
+        cbar = fig.colorbar(contour, ax=axes[i], shrink=0.5)
         cbar.set_label(labels[i])
         # plot events as points
         gdf[i].plot(ax=axes[i], color="black", markersize=1, alpha=0.1, label="Events")
