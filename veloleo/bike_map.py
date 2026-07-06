@@ -91,6 +91,7 @@ def plot_event_heatmaps(
     gdf.to_file(filename, driver="GeoJSON")
     logger.info("Saved GeoJSON to %s", filename)
 
+    gdf = gdf.to_crs("EPSG:3857")
     gdf_dep = gdf[gdf["type"] == "departure"]
     gdf_arr = gdf[gdf["type"] == "arrival"]
 
@@ -98,8 +99,12 @@ def plot_event_heatmaps(
         logger.warning("Need both departures and arrivals to map transition density.")
         return
 
-    x_min, x_max = gdf.geometry.x.min(), gdf.geometry.x.max()
-    y_min, y_max = gdf.geometry.y.min(), gdf.geometry.y.max()
+    # braunschweig
+    bs_bounds_wgs84 = gpd.GeoSeries(
+        [Point(10.42, 52.21), Point(10.62, 52.32)], crs="EPSG:4326"
+    ).to_crs("EPSG:3857")
+    x_min, x_max = bs_bounds_wgs84.x.min(), bs_bounds_wgs84.x.max()
+    y_min, y_max = bs_bounds_wgs84.y.min(), bs_bounds_wgs84.y.max()
     X, Y = np.meshgrid(np.linspace(x_min, x_max, 200), np.linspace(y_min, y_max, 200))
 
     Z_dep = kde_surface(gdf_dep, X, Y)
@@ -131,22 +136,20 @@ def plot_event_heatmaps(
             vmin = 0
             vmax = np.max(Z)
 
-        ctx.add_basemap(
-            axes[i],
-            crs="EPSG:4326",
-            source=ctx.providers.CartoDB.DarkMatter,  # type: ignore
-            zorder=0,
-        )
-
         contour = axes[i].contourf(
             X,
             Y,
             Z,
-            levels=15,
+            levels=25,
             cmap=cmaps[i],
             vmin=vmin,
             vmax=vmax,
-            alpha=0.6,
+            alpha=0.7,
+        )
+
+        ctx.add_basemap(
+            axes[i],
+            source=ctx.providers.OpenStreetMap.Mapnik,  # type: ignore
         )
 
         cbar = fig.colorbar(contour, ax=axes[i], shrink=0.7)
@@ -154,6 +157,7 @@ def plot_event_heatmaps(
         # plot events as points
         gdf[i].plot(ax=axes[i], color="black", markersize=1, alpha=0.1, label="Events")
         axes[i].set_title(titles[i], fontsize=12, fontweight="bold")
+        axes[i].set_aspect("equal")
         axes[i].set_axis_off()
 
     fig.savefig(
