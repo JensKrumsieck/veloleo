@@ -3,7 +3,7 @@ import path from 'path';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load() {
-    const geoJsonPath = path.resolve(process.cwd(), '../data/bike_heatmap.geojson');
+    const geoJsonPath = path.resolve(process.env.DATA_DIR ?? '../data', 'bike_heatmap.geojson');
 
     if (!fs.existsSync(geoJsonPath)) {
         return { error: 'Data file not found', mapData: null, maxCount: 0 };
