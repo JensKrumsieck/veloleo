@@ -76,8 +76,8 @@
     </p>
     <img src="/images/trip_diagnostics.png" alt="Event Dichteverteilungen" />
 </div>
-<div class="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl dark:prose-invert mx-auto text-sm">
-    <p>
+<div class="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl dark:prose-invert mx-auto">
+    <p class="text-sm">
         Code und Daten sind auf GitHub verfügbar. Die Daten wurden von der Nextbike GmbH über die öffentliche GBFS-Schnittstelle bereitgestellt. Die Daten sind anonymisiert und aggregiert, sodass keine Rückschlüsse auf einzelne Nutzer möglich sind.
         <a target="_blank" href="https://github.com/JensKrumsieck/veloleo">GitHub Repository</a>
     </p>
