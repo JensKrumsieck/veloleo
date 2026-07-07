@@ -57,9 +57,15 @@
 
     <p class="text-sm">
         Die Daten wurden von der öffentlichen GBFS-Schnittstelle der Nextbike GmbH über einen Zeitraum von mehreren Tagen im Abstand von 5 Minuten gesammelt. Da diese Schnittstelle allerdings lediglich freie Fahrräder listet, wurden verschwindende
-        Fahräder als Ausleihstart und erscheinende Fahrräder als Ausleihende interpretiert. Aus diesen punktuellen Informationen wurden mittels Bipartite Graph Matching Algorithmus (<em>min_weight_full_bipartite_matching</em>) mögliche Start-Ziel-Paare ermittelt, aus denen die Strecken mittels
-        OpenStreetMap Bike Map anhand des kürzesten Weges ermittelt wurden. Das heißt die Strecken stellen keine wirklichen Fahrten, sondern mögliche Benutzungskorridore dar.
+        Fahräder als Ausleihstart und erscheinende Fahrräder als Ausleihende interpretiert. Aus diesen punktuellen Informationen wurden mittels Bipartite Graph Matching Algorithmus (<em>min_weight_full_bipartite_matching</em>) mögliche
+        Start-Ziel-Paare ermittelt, aus denen die Strecken mittels OpenStreetMap Bike Map anhand des kürzesten Weges ermittelt wurden. Das heißt die Strecken stellen keine wirklichen Fahrten, sondern mögliche Benutzungskorridore dar.
     </p>
 
-    <img src="/images/event_heatmaps.png" alt="Event Dichteverteilungen"/>
+    <h2>Dichteverteilungen</h2>
+    <p>
+        In der nachfolgenden Abbildung wurden die Ausleih-(Departure) und Rückgabedichte (Arrival) um stadtweite Hotspots zu visualisieren. Dabei wurde die Kerndichteschätzer-Methode (Kernel Density Estimate; KDE) verwendet. Des weiteren wurde eine
+        Übergangsdichte durch Subtraktion der Ausleih- und Rückgabedichte voneinander erhalten, die Gebiete aufdeckt, in denen mehr ausgeliehen oder zurückgegeben wird. Dabei zeigt sich, dass im Hochschulviertel und am Hauptbahnhof mehr Rückgaben als
+        Ausleihvorgänge stattfinden, während in den Ringgebieten mehr Ausleihvorgänge vollzogen werden.
+    </p>
+    <img src="/images/event_heatmaps.png" alt="Event Dichteverteilungen" />
 </div>
