@@ -73,6 +73,12 @@
     <p>
         Die durchschnittliche Strecke dauert etwa 7-8 Minuten und ist etwa 1,3 km lang. Die durchschnittliche Geschwindigkeit beträgt dabei etwa 15 km/h. Die nachfolgende Abbildung zeigt die Verteilungen der Streckenlängen, Fahrtdauer und
         Geschwindigkeit. Ungenauigkeiten ergeben sich durch die Annahme, dass der kürzeste Weg gefahren wird und durch den Umstand, dass die Daten nur in 5-Minuten-Intervallen erhoben wurden.
-    </p>    
+    </p>
     <img src="/images/trip_diagnostics.png" alt="Event Dichteverteilungen" />
+</div>
+<div class="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl dark:prose-invert mx-auto text-sm">
+    <p>
+        Code und Daten sind auf GitHub verfügbar. Die Daten wurden von der Nextbike GmbH über die öffentliche GBFS-Schnittstelle bereitgestellt. Die Daten sind anonymisiert und aggregiert, sodass keine Rückschlüsse auf einzelne Nutzer möglich sind.
+        <a target="_blank" href="https://github.com/JensKrumsieck/veloleo">GitHub Repository</a>
+    </p>
 </div>
