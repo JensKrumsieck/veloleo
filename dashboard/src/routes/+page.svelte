@@ -48,6 +48,7 @@
 
 <div class="prose prose-sm sm:prose-base lg:prose-lg xl:prose-xl dark:prose-invert mx-auto">
     <h1>Nutzungsanalyse Veloleo</h1>
+    <h2>Interaktive Karte</h2>
     <p>
         In dieser Karte ist die potentielle Nutzung der Fahrräder des Braunschweiger Fahrradausleihsystems "Veloleo" interaktiv visualisiert. Die Karte zeigt <em>mögliche</em> gefahrene Strecken im Zeitraum der Datensammlung. <em>Mögliche</em> Strecken,
         weil Streckendaten nicht über die öffentlichen Schnittstellen abrufbar sind (siehe unten). Zu Erkennen ist eine erhebliche Nutzung im Bereich der Campusgegenden, sowie Fahrten in oder von Richtung Hauptbahnhof, vorwiegend über den östlichen Ring.

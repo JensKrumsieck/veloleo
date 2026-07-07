@@ -99,6 +99,16 @@ def _events_to_df(events: list[Event]) -> pd.DataFrame:
     return df.sort_values("time").reset_index(drop=True)
 
 
+def _df_to_events(events: pd.DataFrame) -> list[Event]:
+    return [Event(**row) for _, row in events.iterrows()]
+
+
+def clean_anomalies(events: list[Event]) -> list[Event]:
+    df = _events_to_df(events)
+    clean_df = _clean_spatial_density_anomalies(df)
+    return _df_to_events(clean_df)
+
+
 def _build_cost_matrix(dep: pd.DataFrame, arr: pd.DataFrame):
     n_dep = len(dep)
     n_arr = len(arr)
@@ -165,10 +175,7 @@ def match_trips(departures: list[Event], arrivals: list[Event]):
     logger.info("Matching trips...")
 
     dep = _events_to_df(departures)
-    dep = _clean_spatial_density_anomalies(dep)
-
     arr = _events_to_df(arrivals)
-    arr = _clean_spatial_density_anomalies(arr)
 
     n_arr = len(arr)
 

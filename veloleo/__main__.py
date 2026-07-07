@@ -9,7 +9,7 @@ from bike_map import (
     plot_heatmap_data,
     save_geojson,
 )
-from matcher import match_trips
+from matcher import clean_anomalies, match_trips
 from plot import plot_diagnostics
 from routes import find_routes
 
@@ -31,7 +31,9 @@ def main(data_dir: Path):
     events = get_events(data_dir)
 
     departures = [ev for ev in events if ev.type == "departure"]
+    departures = clean_anomalies(departures)
     arrivals = [ev for ev in events if ev.type == "arrival"]
+    arrivals = clean_anomalies(arrivals)
 
     plot_event_heatmaps(events)
 
