@@ -23,6 +23,13 @@ def plot_diagnostics(
         linewidth=1,
         label=f"median = {np.median(distances_km):.2f} km",
     )
+    axes[0].axvline(
+        np.average(distances_km),
+        color="green",
+        linestyle="--",
+        linewidth=1,
+        label=f"average = {np.average(distances_km):.2f} km",
+    )
     axes[0].legend()
 
     axes[1].hist(durations_min, bins=60, color="#10b981", edgecolor="white")
@@ -36,6 +43,13 @@ def plot_diagnostics(
         linewidth=1,
         label=f"median = {np.median(durations_min):.1f} min",
     )
+    axes[1].axvline(
+        np.average(durations_min),
+        color="green",
+        linestyle="--",
+        linewidth=1,
+        label=f"average = {np.average(durations_min):.1f} min",
+    )
     axes[1].legend()
 
     axes[2].hist(speeds_kmh, bins=60, color="#f97316", edgecolor="white")
@@ -48,6 +62,13 @@ def plot_diagnostics(
         linestyle="--",
         linewidth=1,
         label=f"median = {np.median(speeds_kmh):.2f} km/h",
+    )
+    axes[2].axvline(
+        np.average(speeds_kmh),
+        color="green",
+        linestyle="--",
+        linewidth=1,
+        label=f"average = {np.average(speeds_kmh):.2f} km/h",
     )
     axes[2].axvline(
         MAX_SPEED_MS * 3.6,
