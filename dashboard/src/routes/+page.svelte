@@ -58,7 +58,7 @@
     <img src="/images/event_heatmaps.png" alt="Event Dichteverteilungen" />
     <h2>Durchschnittliche Strecke</h2>
     <p>
-        Die durchschnittliche Strecke dauert etwa 7-8 Minuten und ist etwa 1,3 km lang. Die durchschnittliche Geschwindigkeit beträgt dabei etwa 15 km/h. Die nachfolgende Abbildung zeigt die Verteilungen der Streckenlängen, Fahrtdauer und
+        Die durchschnittliche Strecke dauert etwa 7-8 Minuten und ist etwa 1,3 km lang. Die durchschnittliche Geschwindigkeit beträgt dabei etwa 10-11 km/h. Die nachfolgende Abbildung zeigt die Verteilungen der Streckenlängen, Fahrtdauer und
         Geschwindigkeit. Ungenauigkeiten ergeben sich durch die Annahme, dass der kürzeste Weg gefahren wird und durch den Umstand, dass die Daten nur in 5-Minuten-Intervallen erhoben wurden.
     </p>
     <img src="/images/trip_diagnostics.png" alt="Event Dichteverteilungen" />
