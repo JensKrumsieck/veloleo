@@ -47,7 +47,7 @@ def plot_heatmap_data(edges, edges_active, output_file: str = "data/bike_heatmap
             ax=ax,
             column="count",
             cmap="inferno",
-            linewidth=0.5,  # Use your dynamic log scaling!
+            linewidth=0.5,
             norm=LogNorm(vmin=1, vmax=edges_active["count"].max()),
             legend=True,
             zorder=2,

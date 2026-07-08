@@ -30,6 +30,7 @@
 
                 L.tileLayer("https://api.jenskrumsieck.de/openstreetmap/{s}/{z}/{x}/{y}.png", {
                     attribution: "© OpenStreetMap contributors",
+                    className: "map-tiles",
                 }).addTo(newMap);
                 newMap.on("tileerror", (e) => console.log("tile error", e));
                 const currentLayer = L.geoJSON(data.geoJson, {

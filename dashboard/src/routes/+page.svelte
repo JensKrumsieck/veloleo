@@ -1,26 +1,12 @@
 <script lang="ts">
+    import { inferno_color_scale } from "$lib";
     import Map from "$lib/components/Map.svelte";
-
-    function getHeatColor(count: number, maxCount: number) {
-        const ratio = count / (maxCount || 1);
-        if (ratio > 0.85) return "#fcffa4"; // Bright Yellow-White
-        if (ratio > 0.65) return "#fac228"; // Hot Golden Yellow
-        if (ratio > 0.45) return "#f17c1d"; // Vibrant Orange
-        if (ratio > 0.3) return "#d14b4f"; // Hot Pink/Coral Red
-        if (ratio > 0.15) return "#9c2e6f"; // Deep Magenta/Purple
-        if (ratio > 0.05) return "#57106e"; // Dark Purple
-        return "#1b0c41"; // Ink Navy/Black (baseline)
-    }
-
-    function getLineWidth(count: number, maxCount: number) {
-        return 1.5 + (count / (maxCount || 1)) * 8;
-    }
 
     function getFeatureStyle(feature: any) {
         const count = feature?.properties.count || 0;
         return {
-            color: getHeatColor(count, data.maxCount),
-            weight: getLineWidth(count, data.maxCount),
+            color: colorScale(count),
+            weight: 2,
             opacity: 0.85,
             lineCap: "round",
             lineJoin: "round",
@@ -28,6 +14,7 @@
     }
 
     let { data } = $props();
+    const colorScale = $derived(inferno_color_scale(1, data.maxCount));
 
     const mapLayer = $derived({
         geoJson: data.mapData,
