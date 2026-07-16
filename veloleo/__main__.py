@@ -35,7 +35,7 @@ def main(data_dir: Path):
     arrivals = [ev for ev in events if ev.type == "arrival"]
     arrivals = clean_anomalies(arrivals)
 
-    plot_event_heatmaps(events)
+    plot_event_heatmaps(departures + arrivals)
 
     logger.info(f"Found {len(departures)} depature and {len(arrivals)} arrival events")
 
